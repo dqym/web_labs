@@ -1,0 +1,83 @@
+extends ../layout
+
+block content
+  a.w3-button.w3-light-grey.w3-margin-top(href="/books")
+    i.fa-solid.fa-arrow-left
+    |  К списку
+
+  .w3-card.w3-padding.w3-margin-top
+    .w3-row
+      .w3-col.m8.s12
+        h3#bookLabel
+          i.fa-solid.fa-book
+          |  Карточка книги
+        if book.available
+          p
+            span.w3-tag.w3-green В наличии
+        else
+          - const isOver = book.dueDate && new Date(book.dueDate) < new Date(new Date().setHours(0,0,0,0));
+          p
+            span.w3-tag(class= isOver ? 'w3-red' : 'w3-orange')
+              if isOver
+                | Выдана (просрочена)
+              else
+                | Выдана
+            |  — #{book.borrower}, до #{book.dueDate ? book.dueDate.split('-').reverse().join(".") : ""}
+
+        form#bookForm.w3-margin-top
+          .w3-row-padding
+            .w3-third
+              label Автор
+              input.w3-input(type="text", name="author", required, value=book.author)
+            .w3-third
+              label Название
+              input.w3-input(type="text", name="title", required, value=book.title)
+            .w3-third
+              label Год выпуска
+              input.w3-input(type="number", name="year", min="0", max="2100", value=book.year)
+            .w3-third
+              label Ссылка на обложку
+              input.w3-input(type="url", name="coverUrl", placeholder="https://...", value=book.coverUrl)
+          .w3-section.btn-row
+            button#saveBook(type="submit").w3-button.w3-teal
+              i.fa-solid.fa-check
+              |  Сохранить
+            if book.available
+              button#issueBtn(type="button").w3-button.w3-blue
+                i.fa-solid.fa-book
+                |  Выдать
+            else
+              button#returnBtn(type="button").w3-button.w3-orange
+                i.fa-solid.fa-rotate-left
+                |  Принять обратно
+            a#warnDelete.w3-button.w3-red.w3-right(href="#", data-id=book.id)
+              i.fa-regular.fa-trash-can
+              |  Удалить
+      .w3-col.m4.s12
+        .cover-box.w3-center
+          if book.coverUrl
+            img.cover-image(src=book.coverUrl, alt=`Обложка: ${book.title}`, onerror="this.src='/img/placeholder-cover.svg';this.onerror=null")
+          else
+            img.cover-image(src="/img/placeholder-cover.svg", alt="Нет обложки")
+
+  // Диалог выдачи
+  dialog#issueDialog
+    form#issueForm(method="dialog").w3-container
+      h3
+        i.fa-solid.fa-book-reader
+        |  Выдать книгу
+      label Имя читателя
+      input.w3-input(type="text", name="borrower", required, placeholder="Имя")
+      label Дата возврата
+      input.w3-input(type="date", name="dueDate", required)
+      .w3-section
+        button(type="submit").w3-button.w3-teal
+          i.fa-solid.fa-check
+          |  Выдать
+        button(type="button", id="cancelIssue").w3-button.w3-light-grey
+          i.fa-solid.fa-xmark
+          |  Отмена
+
+  // Инициализационные данные для JS
+  script.
+    window.__BOOK__ = !{JSON.stringify(book)};

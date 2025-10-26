@@ -1,0 +1,435 @@
+/* Theme */
+:root {
+    --bg-grad-from: #fdfcff;
+    --bg-grad-via: #eef7ff;
+    --bg-grad-to: #f2fbfb;
+    --card-bg: #ffffff;
+    --text: #0f172a;
+    --muted: #6b7280;
+    --teal: #0f766e;
+    --teal-dark: #0b5f59;
+    --blue: #2563eb;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --ring: rgba(37, 99, 235, 0.35);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-soft: 0 8px 24px rgba(2, 6, 23, 0.12);
+    --shadow-card: 0 12px 30px rgba(2, 6, 23, 0.14);
+    --surface: rgba(255,255,255,0.72);
+    --surface-strong: rgba(255,255,255,0.80);
+    --surface-border: rgba(2, 6, 23, 0.08);
+    --primary: #0f766e;
+    --primary-600: #0b5f59;
+    --primary-100: #e6fffb;
+    --link: #2563eb;
+
+    --word-space: 0.09em;
+    --line-space: 1.7;
+}
+
+html, body {
+    height: 100%;
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: var(--text);
+    background-color: var(--bg-grad-from);
+    background-image:
+            radial-gradient(1000px 600px at 8% -10%, rgba(99, 102, 241, 0.18), transparent 70%),
+            radial-gradient(900px 600px at 108% 110%, rgba(16, 185, 129, 0.16), transparent 70%),
+            radial-gradient(700px 500px at 50% 0%, rgba(56, 189, 248, 0.14), transparent 65%),
+            linear-gradient(135deg, var(--bg-grad-from) 0%, var(--bg-grad-via) 48%, var(--bg-grad-to) 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    line-height: var(--line-space);
+    word-spacing: var(--word-space);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header */
+.app-header {
+    background: rgba(20, 184, 166, 0.72);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    box-shadow: 0 12px 24px rgba(0,0,0,.12);
+    border-bottom: 1px solid rgba(255,255,255,.35);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.app-navbar {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+}
+
+.app-navbar .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: background-color .2s ease, transform .06s ease;
+}
+
+.app-navbar .brand:hover {
+    background: rgba(255,255,255,.12);
+    transform: translateY(-1px);
+}
+
+.brand i {
+    background: rgba(255,255,255,.22);
+    border-radius: 50%;
+    padding: 8px;
+    width: 36px;
+    height: 36px;
+    display: inline-grid;
+    place-items: center;
+}
+
+.brand-title {
+    font-weight: 700;
+    letter-spacing: .2px;
+}
+
+/* Layout */
+.app-container {
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 8px;
+}
+
+.app-footer {
+    border-top: 1px solid rgba(2, 6, 23, .06);
+    background: transparent;
+}
+
+/* Cards */
+.w3-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--surface-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: fadeInUp .24s ease-out;
+}
+
+#bookLabel {
+    margin-left: 7px;
+}
+
+#bookForm {
+    margin-left: 7px;
+    margin-bottom: 7px;
+}
+
+.filter-card,
+.table-card {
+    padding: 16px !important;
+}
+
+/* Buttons */
+.w3-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    line-height: 1;
+    border-radius: var(--radius-sm) !important;
+    font-weight: 600;
+    padding: 8px 14px !important;
+    border: 1px solid rgba(2, 6, 23, 0.06);
+    background-clip: padding-box;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.04);
+    transition: transform .05s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+}
+
+.w3-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+
+.w3-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* Row of action buttons */
+.btn-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Push the rightmost button/link to the edge without float */
+.btn-row .w3-right {
+    margin-left: auto;
+    float: none !important;
+}
+
+/* Inputs */
+.w3-input {
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid rgba(2, 6, 23, 0.12) !important;
+    background: var(--surface-strong);
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+    margin-left: 7px;
+}
+
+.w3-input:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px var(--ring);
+    background: #fff;
+}
+
+/* Add Book form fields: stacked layout */
+#addBookForm .form-field {
+    margin: 10px 0 14px;
+}
+#addBookForm .form-field > label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+#addBookForm .form-field .w3-input {
+    margin-left: 0;          /* переопределяем глобальный отступ */
+    width: 100%;
+    display: block;
+}
+
+/* Tags */
+.w3-tag {
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+
+/* Table */
+.table-card .w3-responsive {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--surface-border);
+    box-shadow: var(--shadow-soft);
+    background: rgba(255,255,255,0.8);
+}
+
+.w3-responsive > table {
+    width: 100%;
+    table-layout: auto;
+}
+
+.table-card table {
+    border-collapse: separate !important;
+    border-spacing: 0;
+}
+
+.table-card thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: rgba(241, 245, 249, 0.9);
+    color: #0f172a;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(2, 6, 23, 0.06);
+}
+
+.table-card tbody tr {
+    transition: background-color .12s ease;
+}
+
+.table-card tr:hover {
+    background: rgba(15, 118, 110, 0.07) !important;
+}
+
+.table-card td, .table-card th {
+    padding: 12px 14px;
+    vertical-align: middle;
+}
+
+/* Column alignments */
+.table-card th:nth-child(1), .table-card td:nth-child(1) { 
+    text-align: center; 
+    width: 72px;
+}
+/* Все текстовые колонки слева: Автор, Название, Год, Статус, Читатель, Дата возврата */
+.table-card th:nth-child(2), .table-card td:nth-child(2),
+.table-card th:nth-child(3), .table-card td:nth-child(3),
+.table-card th:nth-child(4), .table-card td:nth-child(4),
+.table-card th:nth-child(5), .table-card td:nth-child(5),
+.table-card th:nth-child(6), .table-card td:nth-child(6),
+.table-card th:nth-child(7), .table-card td:nth-child(7) { 
+    text-align: left; 
+}
+/* Действия — справа */
+.table-card th:nth-child(8), .table-card td:nth-child(8) {
+    text-align: right;
+    min-width: 160px;
+}
+
+/* Cover thumb */
+.cover-thumb {
+    width: 44px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.18);
+    background: #f1f5f9;
+}
+
+/* Book card cover */
+.cover-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+.cover-image {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 420px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-card);
+    background: #f1f5f9;
+}
+
+#booksTableBody td:last-child { white-space: nowrap; }
+#booksTableBody td:last-child .w3-button + .w3-button { margin-left: 16px; }
+
+/* Dialogs */
+dialog {
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+dialog::backdrop {
+    background: rgba(2, 6, 23, .45);
+}
+
+/* Utilities */
+.w3-padding-24 { padding: 24px !important; }
+.w3-right { float: right; }
+.w3-flex { display: flex; gap: 8px; align-items: center; }
+
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .w3-row-padding > [class*="w3-"] { padding: 4px 8px !important; }
+    table.w3-table thead { font-size: 0.9rem; }
+    table.w3-table td, table.w3-table th { padding: 8px 10px; }
+    .brand-title { font-size: 15px; }
+
+    /* Фильтры: более плотное размещение */
+    .filter-card .w3-row-padding { margin-left: 0; margin-right: 0; }
+    .filter-card .w3-row-padding > * { padding: 4px 0 !important; }
+    .filter-card .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .filter-card #openAddDialog { grid-column: 1 / -1; justify-self: stretch; }
+
+    /* Таблица -> карточки */
+    .table-card .w3-responsive { overflow: visible; }
+    .table-card thead { display: none; }
+    .table-card table { border: 0; }
+    .table-card tbody, 
+    .table-card tr, 
+    .table-card td { display: block; width: 100%; }
+    .table-card tbody tr {
+        margin: 12px 0;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-md);
+        background: rgba(255,255,255,0.92);
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+    }
+    .table-card td {
+        border-bottom: 1px solid rgba(2, 6, 23, 0.06);
+        padding: 10px 12px;
+        display: grid;
+        grid-template-columns: 40% 1fr;
+        gap: 10px;
+        align-items: center;
+        word-break: break-word;
+    }
+    .table-card td:last-child { border-bottom: none; }
+
+    /* Подписи для полей внутри карточки */
+    .table-card td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--muted);
+    }
+    /* Подписи через nth-child для таблицы без data-label */
+    .table-card td:nth-child(1)::before { content: ""; display: none; } /* Обложка без подписи */
+    .table-card td:nth-child(2)::before { content: "Автор"; }
+    .table-card td:nth-child(3)::before { content: "Название"; }
+    .table-card td:nth-child(4)::before { content: "Год"; }
+    .table-card td:nth-child(5)::before { content: "Статус"; }
+    .table-card td:nth-child(6)::before { content: "Читатель"; }
+    .table-card td:nth-child(7)::before { content: "Дата возврата"; }
+    .table-card td:nth-child(8)::before { content: "Действия"; }
+
+    /* Обложка — меньше и по центру */
+    .table-card td:nth-child(1) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px;
+    }
+    .cover-thumb {
+        width: 40px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,.18);
+        background: #f1f5f9;
+    }
+
+    /* Кнопки действий — компактно и всегда видимы */
+    .table-card td:nth-child(8) {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;           /* позволяем перенос кнопок на следующую строку */
+        padding-right: calc(16px + env(safe-area-inset-right, 0px)); /* запас справа + safe-area */
+        box-sizing: border-box;
+    }
+    .table-card td:nth-child(8)::before {
+        content: "";               /* скрываем подпись "Действия" внутри карточки */
+        display: none;
+    }
+    #booksTableBody td:last-child { 
+        white-space: normal;       /* разрешаем перенос, чтобы кнопки не обрезались */
+    }
+    #booksTableBody td:last-child .w3-button + .w3-button { margin-left: 8px; }
+    /* немного упростим кнопки в блоке действий на очень узких экранах */
+    .table-card td:nth-child(8) .w3-button { 
+        padding: 6px 8px !important; 
+    }
+
+    .table-card td { text-align: left !important; }
+
+    .w3-button { padding: 7px 10px !important; }
+}

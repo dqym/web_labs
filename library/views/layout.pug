@@ -1,0 +1,23 @@
+doctype html
+html(lang="ru")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    meta(name="theme-color", content="#0f766e")
+    title #{title || 'Библиотека'}
+    // w3.css
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.15/w3.min.css")
+    // Font Awesome
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css", integrity="", crossorigin="anonymous")
+    // Inter font
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+    link(rel="stylesheet", href="/css/styles.css")
+  body
+    header.app-header.w3-container
+      .w3-bar.app-navbar
+        a.brand.w3-bar-item(href="/books")
+          i.fa-solid.fa-book-open
+          span.brand-title Домашняя библиотека
+    main.w3-container.app-container
+      block content
+    script(src="/js/app.js", defer)

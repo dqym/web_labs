@@ -1,0 +1,10 @@
+extends ./layout
+
+block content
+  .w3-card.w3-padding.w3-center.w3-margin-top
+    i.fa-solid.fa-triangle-exclamation.w3-text-red(style="font-size: 48px")
+    h3 Ошибка
+    p.w3-text-grey #{message || 'Что-то пошло не так'}
+    a.w3-button.w3-teal.w3-margin-top(href="/books")
+      i.fa-solid.fa-arrow-left
+      |  К списку книг

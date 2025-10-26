@@ -1,0 +1,114 @@
+extends ../layout
+
+block content
+  // Заголовок страницы
+  .page-title.w3-margin-top
+    h1
+      i.fa-solid.fa-books
+      |  Список книг
+    p.w3-text-grey.w3-small Просматривайте, фильтруйте и управляйте библиотекой
+
+  // Фильтры и поиск
+  .w3-card.w3-padding.w3-margin-bottom.filter-card
+    .w3-row-padding
+      .w3-col.s12
+        label.w3-block
+          span.w3-small.w3-text-grey Поиск по автору, названию, году или читателю
+          input#searchQuery.w3-input(type="search", placeholder="Начните вводить...")
+    .w3-row-padding
+      .w3-third
+        label.w3-block.w3-flex.w3-items-center
+          input#filterAvailable(type="checkbox")
+          span
+            i.fa-solid.fa-check-double.w3-text-green
+            |  Только в наличии
+      .w3-third
+        label.w3-block.w3-flex.w3-items-center
+          input#filterOverdue(type="checkbox")
+          span
+            i.fa-solid.fa-clock-rotate-left.w3-text-red
+            |  Только с просрочкой
+      .w3-third
+        label.w3-block
+          span.w3-small.w3-text-grey Дата возврата до
+          input#filterDueBefore.w3-input(type="date")
+    .w3-section.btn-row
+      button#applyFilters.w3-button.w3-teal
+        i.fa-solid.fa-filter
+        |  Применить
+      button#resetFilters.w3-button.w3-light-grey
+        i.fa-solid.fa-rotate-left
+        |  Сбросить
+      button#openAddDialog.w3-button.w3-blue.w3-right
+        i.fa-solid.fa-plus
+        |  Добавить книгу
+
+  // Таблица
+  .w3-card.w3-padding.table-card
+    .w3-responsive
+      table.w3-table.w3-hoverable.w3-striped
+        thead
+          tr
+            th Обложка
+            th Автор
+            th Название
+            th Год
+            th Статус
+            th Читатель
+            th Дата возврата
+            th Действия
+        tbody#booksTableBody
+          each b in books
+            tr(data-id=b.id)
+              td
+                if b.coverUrl
+                  img.cover-thumb(src=b.coverUrl, alt=`${b.title} — обложка`, onerror="this.src='/img/placeholder-cover.svg';this.onerror=null")
+                else
+                  img.cover-thumb(src="/img/placeholder-cover.svg", alt="Нет обложки")
+              td= b.author
+              td= b.title
+              td= b.year || ''
+              td
+                if b.available
+                  span.w3-tag.w3-green В наличии
+                else
+                  - const isOver = b.dueDate && new Date(b.dueDate) < new Date(new Date().setHours(0,0,0,0));
+                  span.w3-tag(class= isOver ? 'w3-red' : 'w3-orange') Выдана
+              td= b.borrower || ''
+              - const dueFmt = b.dueDate ? b.dueDate.split('-').reverse().join('.') : ''
+              td= dueFmt
+              td
+                a.w3-button.w3-small.w3-teal(href=`/books/${b.id}`, title="Открыть карточку")
+                  i.fa-regular.fa-pen-to-square
+                button.w3-button.w3-small.w3-red.delete-book(type="button", data-id=b.id, title="Удалить")
+                  i.fa-regular.fa-trash-can
+
+  // Диалог добавления книги
+  dialog#addBookDialog
+    form#addBookForm(method="dialog").w3-container
+      h3
+        i.fa-solid.fa-plus
+        |  Добавить книгу
+      .form-field
+        label Автор
+        input.w3-input(type="text", name="author", required)
+      .form-field
+        label Название
+        input.w3-input(type="text", name="title", required)
+      .form-field
+        label Год выпуска
+        input.w3-input(type="number", name="year", min="0", max="2100")
+      .form-field
+        label Ссылка на обложку (необязательно)
+        input.w3-input(type="url", name="coverUrl", placeholder="https://...")
+      .w3-section.btn-row
+        button(type="submit").w3-button.w3-teal
+          i.fa-solid.fa-check
+          |  Сохранить
+        button(type="button", id="cancelAdd").w3-button.w3-light-grey
+          i.fa-solid.fa-xmark
+          |  Отмена
+
+  // Инициализационные данные для JS
+  script.
+    window.__INITIAL_BOOKS__ = !{JSON.stringify(books || [])};

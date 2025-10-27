@@ -1,0 +1,14 @@
+{
+  "name": "user-utils",
+  "version": "1.0.0",
+  "description": "Утилиты валидации пользователя для Social Admin",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

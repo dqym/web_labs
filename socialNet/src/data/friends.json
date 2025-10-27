@@ -1,0 +1,10 @@
+[
+  {
+    "userId": "u1abcde123",
+    "friends": ["u2fghij456"]
+  },
+  {
+    "userId": "u2fghij456",
+    "friends": ["u1abcde123"]
+  }
+]

@@ -1,0 +1,33 @@
+// Переменные
+$primary: #0d6efd;
+$secondary: #6c757d;
+
+// Миксин
+@mixin card-shadow {
+  box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,.075);
+}
+
+// Импорт Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// Стили приложения
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  @include card-shadow;
+}
+
+.table-users {
+  th, td {
+    vertical-align: middle;
+  }
+  .photo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $secondary;
+  }
+}

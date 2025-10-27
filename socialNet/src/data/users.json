@@ -1,0 +1,20 @@
+[
+  {
+    "id": "u1abcde123",
+    "fullName": "Иван Петров",
+    "birthdate": "1990-05-12",
+    "email": "ivan.petrov@example.com",
+    "photoUrl": "https://cdn-storage-media.tass.ru/resize/752x496/tass_media/2025/04/29/k/1745936749627430_kWkp7tT3.jpg",
+    "role": "admin",
+    "status": "active"
+  },
+  {
+    "id": "u2fghij456",
+    "fullName": "Анна Смирнова",
+    "birthdate": "1993-11-02",
+    "email": "anna.smirnova@example.com",
+    "photoUrl": "",
+    "role": "user",
+    "status": "active"
+  }
+]

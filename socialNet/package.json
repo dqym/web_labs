@@ -1,0 +1,58 @@
+{
+  "name": "social-admin-app",
+  "version": "1.0.0",
+  "description": "Администрирование соцсети: Express + Pug + HTTPS + JSON storage + Bootstrap + SASS/LESS + Babel + Gulp + Webpack",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --watch src --watch views --ext js,pug,json --exec node index.js",
+    "build:gulp": "gulp build",
+    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.js",
+    "clean": "node -e \"import('node:fs').then(fs=>{fs.rmSync('dist-gulp',{recursive:true,force:true});fs.rmSync('dist-webpack',{recursive:true,force:true});})\"",
+    "lint": "echo \"Add your linter here\"",
+    "test": "echo \"No tests yet\"",
+    "publish:module": "npm publish ./modules/user-utils --access public",
+    "unpublish:module": "npm unpublish user-utils --force"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "express": "^4.19.2",
+    "nanoid": "^5.0.7",
+    "pug": "^2.0.0",
+    "selfsigned": "^2.4.1",
+    "user-utils": "file:modules/user-utils"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.26.0",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-loader": "^9.2.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.10.0",
+    "del": "^7.1.0",
+    "gulp": "^5.0.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-less": "^5.0.0",
+    "gulp-pug": "^5.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "html-webpack-plugin": "^5.6.0",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
+    "mini-css-extract-plugin": "^2.9.1",
+    "nodemon": "^3.1.7",
+    "pug-loader": "^2.4.0",
+    "sass": "^1.80.3",
+    "sass-loader": "^16.0.2",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

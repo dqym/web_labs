@@ -1,6 +1,6 @@
 import express from 'express';
 import { nanoid } from 'nanoid';
-import { getAllNews, saveAllNews, getAllFriends } from '../utils/fileDb.js';
+import {getAllNews, saveAllNews, getAllFriends, getAllUsers} from '../utils/fileDb.js';
 
 const router = express.Router();
 
@@ -8,13 +8,20 @@ const router = express.Router();
 router.get('/users/:id/news', async (req, res, next) => {
   try {
     const userId = req.params.id;
-    const [news, friendsList] = await Promise.all([getAllNews(), getAllFriends()]);
+    const [news, friendsList, usersList] = await Promise.all([getAllNews(), getAllFriends(), getAllUsers()]);
     const rec = friendsList.find((l) => l.userId === userId);
     const friendSet = new Set(rec ? rec.friends : []);
     const feed = news
       .filter((n) => friendSet.has(n.authorId))
       .filter((n) => n.status !== 'blocked')
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .map((n) => {
+          const author = usersList.find((u) => u.id === n.authorId);
+          return {
+              ...n,
+              authorName: author.fullName,
+          };
+      });
     res.json(feed);
   } catch (e) {
     next(e);

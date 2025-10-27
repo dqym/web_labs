@@ -3,5 +3,11 @@ extends ./layout.pug
 block content
   .admin-panel
     .title Новости друзей
+
+    // Создать пост от имени пользователя
+    form#news-create-form(data-user-id=userId).mb-3
+      .input-group
+        textarea.form-control(name="content", rows="2", placeholder="Что нового?", required)
+        button.btn.btn-success(type="submit") Опубликовать
+
     ul.list-group#news-list(data-user-id=userId)
-      li.list-group-item.text-muted Загрузка...

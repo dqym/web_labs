@@ -13,6 +13,7 @@ async function api(path, options = {}) {
   return res.text();
 }
 
+// ---------- Users ----------
 function initUsersTable() {
   const table = document.querySelector('#users-table');
   if (!table) return;
@@ -50,9 +51,29 @@ function initUsersTable() {
   });
 }
 
-function initUserEditForm() {
-  const form = document.querySelector('#user-edit-form');
+function initCreateUserForm() {
+  const form = document.querySelector('#create-user-form');
   if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+    try {
+      await api('/api/users', { method: 'POST', body: JSON.stringify(payload) });
+      showToast('Пользователь создан');
+      window.location.reload();
+    } catch (err) {
+      alert('Ошибка создания: ' + err.message);
+    }
+  });
+}
+
+// ---------- User edit ----------
+function initUserEditForm() {
+    const form = document.querySelector('#user-edit-form');
+    if (!form) return;
+  const delButton = form.querySelector('[data-delete-user]');
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const userId = form.dataset.userId;
@@ -61,15 +82,30 @@ function initUserEditForm() {
     await api(`/api/users/${userId}`, { method: 'PUT', body: JSON.stringify(payload) });
     showToast('Пользователь сохранён');
   });
+
+  if (delButton) {
+    delButton.addEventListener('click', async () => {
+      const userId = form.dataset.userId;
+      if (!confirm("Вы уверены, что хотите удалить пользователя?")) return;
+      await api(`/api/users/${userId}`, { method: 'DELETE' });
+      showToast("Пользователь удалён");
+      window.location.href = '/users';
+    });
+  }
 }
 
+// ---------- Friends ----------
 function initFriendsPage() {
   const container = document.querySelector('#friends-list');
   const userId = container?.dataset.userId;
   if (!container || !userId) return;
 
+  const select = document.querySelector('#add-friend-select');
+  const btnAdd = document.querySelector('#add-friend-button');
+
   const load = async () => {
-    const friends = await api(`/api/users/${userId}/friends`);
+    const [friends, allUsers] = await Promise.all([api(`/api/users/${userId}/friends`), api('/api/users')]);
+    // Рендер списка друзей
     container.innerHTML = '';
     friends.forEach((u) => {
       const li = document.createElement('li');
@@ -79,6 +115,17 @@ function initFriendsPage() {
         <button class="btn btn-sm btn-outline-danger" data-remove="${u.id}">Удалить</button>`;
       container.appendChild(li);
     });
+
+    // Заполнить select доступными для добавления
+    if (select) {
+      const friendIds = new Set(friends.map((u) => u.id));
+      const options = ['<option value="">Выберите пользователя для добавления в друзья</option>'].concat(
+        allUsers
+          .filter((u) => u.id !== userId && !friendIds.has(u.id))
+          .map((u) => `<option value="${u.id}">${u.fullName} &lt;${u.email}&gt;</option>`)
+      );
+      select.innerHTML = options.join('');
+    }
   };
 
   container.addEventListener('click', async (e) => {
@@ -90,9 +137,20 @@ function initFriendsPage() {
     }
   });
 
+  if (btnAdd && select) {
+    btnAdd.addEventListener('click', async () => {
+      const friendId = select.value;
+      if (!friendId) return;
+      await api(`/api/users/${userId}/friends`, { method: 'POST', body: JSON.stringify({ friendId }) });
+      await load();
+      showToast('Друг добавлен');
+    });
+  }
+
   load().catch(console.error);
 }
 
+// ---------- News ----------
 function initNewsPage() {
   const container = document.querySelector('#news-list');
   const userId = container?.dataset.userId;
@@ -104,14 +162,30 @@ function initNewsPage() {
     news.forEach((n) => {
       const li = document.createElement('li');
       li.className = 'list-group-item';
-      li.innerHTML = `<div class="fw-bold">${new Date(n.createdAt).toLocaleString()}</div><div>${n.content}</div>`;
+      li.innerHTML = `<div class="fw-bold">${n.authorName} ${new Date(n.createdAt).toLocaleString()}</div><div>${n.content}</div>`;
       container.appendChild(li);
     });
   };
 
+  const form = document.querySelector('#news-create-form');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const authorId = form.dataset.userId;
+      const content = form.querySelector('textarea[name="content"]').value.trim();
+      if (!content) return;
+      await api('/api/news', { method: 'POST', body: JSON.stringify({ authorId, content }) });
+      showToast('Пост опубликован');
+      form.reset();
+      // лента друзей может не включать свои посты; просто перезагрузим ленту
+      await load();
+    });
+  }
+
   load().catch(console.error);
 }
 
+// ---------- UI ----------
 function showToast(message) {
   const el = document.createElement('div');
   el.className = 'toast align-items-center text-bg-primary border-0 position-fixed bottom-0 end-0 m-3';
@@ -125,6 +199,7 @@ function showToast(message) {
 
 document.addEventListener('DOMContentLoaded', () => {
   initUsersTable();
+  initCreateUserForm();
   initUserEditForm();
   initFriendsPage();
   initNewsPage();

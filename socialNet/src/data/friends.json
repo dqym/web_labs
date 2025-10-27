@@ -1,10 +1,21 @@
 [
   {
     "userId": "u1abcde123",
-    "friends": ["u2fghij456"]
+    "friends": [
+      "u2fghij456",
+      "UFb48EoQ8k"
+    ]
   },
   {
     "userId": "u2fghij456",
-    "friends": ["u1abcde123"]
+    "friends": [
+      "u1abcde123"
+    ]
+  },
+  {
+    "userId": "UFb48EoQ8k",
+    "friends": [
+      "u1abcde123"
+    ]
   }
 ]

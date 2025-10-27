@@ -16,7 +16,7 @@ const sass = gulpSass(dartSass);
 const paths = {
   views: {
     src: 'views/**/*.pug',
-    pages: ['views/users.pug', 'views/friends.pug', 'views/news.pug'],
+    pages: ['views/users.pug', 'views/friends.pug', 'views/news.pug', 'views/user_edit.pug'],
     dest: 'dist-gulp'
   },
   styles: {

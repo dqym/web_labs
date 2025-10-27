@@ -33,6 +33,7 @@ block content
               option(value="blocked", selected=user.status==='blocked') Заблокирован
         .d-flex.gap-2
           button.btn.btn-primary(type="submit") Сохранить
+          button.btn.btn-danger(type="button" data-delete-user) Удалить
           a.btn.btn-secondary(href="/users") Назад
     else
       p.text-danger Пользователь не найден

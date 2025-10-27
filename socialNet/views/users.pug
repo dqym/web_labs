@@ -2,6 +2,36 @@ extends ./layout.pug
 
 block content
   .admin-panel
+
+    // Форма создания нового пользователя
+    form#create-user-form.mb-4
+      .row.g-3
+        .col-md-4
+          label.form-label ФИО
+          input.form-control(type="text", name="fullName", required, placeholder="Иван Иванов")
+        .col-md-4
+          label.form-label Email
+          input.form-control(type="email", name="email", required, placeholder="user@example.com")
+        .col-md-4
+          label.form-label Дата рождения
+          input.form-control(type="date", name="birthdate")
+      .row.g-3.mt-0
+        .col-md-6
+          label.form-label Фото (URL)
+          input.form-control(type="text", name="photoUrl", placeholder="https://...")
+        .col-md-3
+          label.form-label Роль
+          select.form-select(name="role")
+            option(value="user", selected) Пользователь
+            option(value="admin") Администратор
+        .col-md-3
+          label.form-label Статус
+          select.form-select(name="status")
+            option(value="unconfirmed", selected) Не подтверждён
+            option(value="active") Активный
+            option(value="blocked") Заблокирован
+      .mt-3
+        button.btn.btn-primary(type="submit") Добавить пользователя
     .title Список пользователей
     if users && users.length
       table.table.table-striped.table-users#users-table
@@ -16,34 +46,34 @@ block content
             th Статус
             th Действия
         tbody
-          each u in users
-            tr(data-user-id=u.id)
-              td
-                if u.photoUrl
-                  img.photo(src=u.photoUrl, alt=u.fullName, onerror="this.onerror=null;this.src='/assets/media/placeholder.svg';")
-                else
-                  img.photo(src="/assets/media/placeholder.svg", alt="placeholder")
-              td
-                input.form-control(type="text", name="fullName", value=u.fullName)
-              td
-                input.form-control(type="date", name="birthdate", value=u.birthdate)
-              td
-                input.form-control(type="email", name="email", value=u.email)
-              td
-                input.form-control(type="text", name="photoUrl", value=u.photoUrl placeholder="")
-              td
-                select.form-select(data-role)
-                  option(value="user", selected=u.role==='user') Пользователь
-                  option(value="admin", selected=u.role==='admin') Администратор
-              td
-                select.form-select(data-status)
-                  option(value="unconfirmed", selected=u.status==='unconfirmed') Не подтверждён
-                  option(value="active", selected=u.status==='active') Активный
-                  option(value="blocked", selected=u.status==='blocked') Заблокирован
-              td.d-flex.gap-2
-                a.btn.btn-sm.btn-outline-secondary(href=`/users/${u.id}`) Редактировать
-                a.btn.btn-sm.btn-outline-primary(href=`/users/${u.id}/friends`) Друзья
-                a.btn.btn-sm.btn-outline-info(href=`/users/${u.id}/news`) Новости
-                button.btn.btn-sm.btn-success(type="button", data-save-user) Сохранить
+           each u in users
+             tr(data-user-id=u.id)
+               td
+                 if u.photoUrl
+                   img.photo(src=u.photoUrl, alt=u.fullName, onerror="this.onerror=null;this.src='/assets/media/placeholder.svg';")
+                 else
+                   img.photo(src="/assets/media/placeholder.svg", alt="placeholder")
+               td
+                 input.form-control(type="text", name="fullName", value=u.fullName)
+               td
+                 input.form-control(type="date", name="birthdate", value=u.birthdate)
+               td
+                 input.form-control(type="email", name="email", value=u.email)
+               td
+                 input.form-control(type="text", name="photoUrl", value=u.photoUrl placeholder="")
+               td
+                 select.form-select(data-role)
+                   option(value="user", selected=u.role==='user') Пользователь
+                   option(value="admin", selected=u.role==='admin') Администратор
+               td
+                 select.form-select(data-status)
+                   option(value="unconfirmed", selected=u.status==='unconfirmed') Не подтверждён
+                   option(value="active", selected=u.status==='active') Активный
+                   option(value="blocked", selected=u.status==='blocked') Заблокирован
+               td.d-flex.gap-2
+                 a.btn.btn-sm.btn-outline-secondary(href=`/users/${u.id}`) Редактировать
+                 a.btn.btn-sm.btn-outline-primary(href=`/users/${u.id}/friends`) Друзья
+                 a.btn.btn-sm.btn-outline-info(href=`/users/${u.id}/news`) Новости
+                 button.btn.btn-sm.btn-success(type="button", data-save-user) Сохранить
     else
       p.text-muted Нет пользователей

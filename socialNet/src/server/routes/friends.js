@@ -34,6 +34,14 @@ router.post('/:id/friends', async (req, res, next) => {
     if (!rec.friends.includes(friendId)) {
       rec.friends.push(friendId);
     }
+    rec = lists.find((l) => l.userId === friendId);
+    if (!rec) {
+        rec = { friendId, friends: [] };
+        lists.push(rec);
+    }
+    if (!rec.friends.includes(userId)) {
+        rec.friends.push(userId);
+    }
     await saveAllFriends(lists);
     res.status(201).json(rec);
   } catch (e) {

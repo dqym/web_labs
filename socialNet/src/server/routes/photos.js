@@ -15,7 +15,7 @@ router.get('/users/:id/photos', async (req, res, next) => {
   }
 });
 
-// загрузка фото (упрощенно: только URL)
+// загрузка фото
 router.post('/users/:id/photos', async (req, res, next) => {
   try {
     const userId = req.params.id;

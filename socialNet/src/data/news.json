@@ -5,5 +5,19 @@
     "content": "Мой первый пост!",
     "status": "active",
     "createdAt": "2024-01-10T10:00:00.000Z"
+  },
+  {
+    "id": "oadIIVDzAj",
+    "authorId": "UryOHh3hDr",
+    "content": "123",
+    "status": "active",
+    "createdAt": "2025-10-27T10:00:59.252Z"
+  },
+  {
+    "id": "4bNNLOtBmj",
+    "authorId": "UFb48EoQ8k",
+    "content": "123",
+    "status": "active",
+    "createdAt": "2025-10-27T10:38:54.430Z"
   }
 ]

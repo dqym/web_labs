@@ -3,5 +3,14 @@ extends ./layout.pug
 block content
   .admin-panel
     .title Друзья пользователя
+
+    // Добавить друга
+    .row.g-2.mb-3
+      .col-md-8
+        select.form-select#add-friend-select
+          option(value="") Выберите пользователя для добавления в друзья
+      .col-md-4.d-grid
+        button.btn.btn-primary#add-friend-button(type="button") Добавить друга
+
     ul.list-group#friends-list(data-user-id=userId)
       li.list-group-item.text-muted Загрузка...

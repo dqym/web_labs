@@ -1,4 +1,3 @@
-/* Theme */
 :root {
     --bg-grad-from: #fdfcff;
     --bg-grad-via: #eef7ff;
@@ -305,6 +304,19 @@ html, body {
     border-radius: 10px;
     box-shadow: var(--shadow-card);
     background: #f1f5f9;
+}
+
+.table-card td:nth-child(5),
+.table-card th:nth-child(5) {
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    .table-card td:nth-child(5) {
+        grid-template-columns: 40% 1fr;
+        word-break: normal;
+        white-space: nowrap;
+    }
 }
 
 #booksTableBody td:last-child { white-space: nowrap; }

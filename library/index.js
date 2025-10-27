@@ -71,7 +71,7 @@ app.get('/books', async (req, res, next) => {
 
 app.get('/books/:id', async (req, res, next) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id);
     const books = await readBooks();
     const book = books.find(b => b.id === id);
     if (!book) {
@@ -94,8 +94,6 @@ app.get('/api/books', async (req, res, next) => {
 
     if (available === 'true') {
       result = result.filter(b => b.available === true);
-    } else if (available === 'false') {
-      result = result.filter(b => b.available === false);
     }
 
     if (overdue === 'true') {
@@ -136,7 +134,7 @@ app.get('/api/books', async (req, res, next) => {
 
 app.get('/api/books/:id', async (req, res, next) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id);
     const books = await readBooks();
     const book = books.find(b => b.id === id);
     if (!book) return res.status(404).json({ error: 'Not found' });
@@ -152,7 +150,7 @@ app.post('/api/books', async (req, res, next) => {
     if (!title || !author) {
       return res.status(400).json({ error: 'Author and title are required' });
     }
-    const y = year ? parseInt(year, 10) : null;
+    const y = year ? parseInt(year) : null;
     const books = await readBooks();
     const now = new Date().toISOString();
     const book = {
@@ -177,7 +175,7 @@ app.post('/api/books', async (req, res, next) => {
 
 app.put('/api/books/:id', async (req, res, next) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id);
     const { title, author, year, coverUrl } = req.body;
     const books = await readBooks();
     const idx = books.findIndex(b => b.id === id);
@@ -186,7 +184,7 @@ app.put('/api/books/:id', async (req, res, next) => {
     if (title !== undefined) books[idx].title = String(title).trim();
     if (author !== undefined) books[idx].author = String(author).trim();
     if (year !== undefined) {
-      const y = parseInt(year, 10);
+      const y = parseInt(year);
       books[idx].year = Number.isInteger(y) ? y : null;
     }
     if (coverUrl !== undefined) books[idx].coverUrl = String(coverUrl);
@@ -201,7 +199,7 @@ app.put('/api/books/:id', async (req, res, next) => {
 
 app.delete('/api/books/:id', async (req, res, next) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id);
     const books = await readBooks();
     const idx = books.findIndex(b => b.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
@@ -215,7 +213,7 @@ app.delete('/api/books/:id', async (req, res, next) => {
 
 app.post('/api/books/:id/issue', async (req, res, next) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id);
     const { borrower, dueDate } = req.body;
     if (!borrower || !dueDate) {
       return res.status(400).json({ error: 'Borrower and dueDate are required' });
@@ -258,13 +256,11 @@ app.post('/api/books/:id/return', async (req, res, next) => {
   }
 });
 
-// Simple 404 page route for non-existing pages
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Not found' });
   res.status(404).render('404', { title: 'Не найдено', message: 'Страница не найдена' });
 });
 
-// Error handler
 app.use((err, req, res, next) => {
   console.error(err);
   if (req.path.startsWith('/api/')) {
@@ -274,7 +270,6 @@ app.use((err, req, res, next) => {
   }
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Library app is running on http://localhost:${PORT}`);
 });

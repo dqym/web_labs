@@ -5,15 +5,15 @@ block content
   .page-title.w3-margin-top
     h1
       i.fa-solid.fa-books
-      |  Список книг
-    p.w3-text-grey.w3-small Просматривайте, фильтруйте и управляйте библиотекой
+      | Список книг
+    p.w3-text-grey Просматривайте, фильтруйте и управляйте библиотекой
 
   // Фильтры и поиск
   .w3-card.w3-padding.w3-margin-bottom.filter-card
     .w3-row-padding
       .w3-col.s12
         label.w3-block
-          span.w3-small.w3-text-grey Поиск по автору, названию, году или читателю
+          span.w3-text-grey Поиск по автору, названию, году или читателю
           input#searchQuery.w3-input(type="search", placeholder="Начните вводить...")
     .w3-row-padding
       .w3-third
@@ -58,30 +58,30 @@ block content
             th Дата возврата
             th Действия
         tbody#booksTableBody
-          each b in books
-            tr(data-id=b.id)
-              td
-                if b.coverUrl
-                  img.cover-thumb(src=b.coverUrl, alt=`${b.title} — обложка`, onerror="this.src='/img/placeholder-cover.svg';this.onerror=null")
-                else
-                  img.cover-thumb(src="/img/placeholder-cover.svg", alt="Нет обложки")
-              td= b.author
-              td= b.title
-              td= b.year || ''
-              td
-                if b.available
-                  span.w3-tag.w3-green В наличии
-                else
-                  - const isOver = b.dueDate && new Date(b.dueDate) < new Date(new Date().setHours(0,0,0,0));
-                  span.w3-tag(class= isOver ? 'w3-red' : 'w3-orange') Выдана
-              td= b.borrower || ''
-              - const dueFmt = b.dueDate ? b.dueDate.split('-').reverse().join('.') : ''
-              td= dueFmt
-              td
-                a.w3-button.w3-small.w3-teal(href=`/books/${b.id}`, title="Открыть карточку")
-                  i.fa-regular.fa-pen-to-square
-                button.w3-button.w3-small.w3-red.delete-book(type="button", data-id=b.id, title="Удалить")
-                  i.fa-regular.fa-trash-can
+          // each b in books
+          //   tr(data-id=b.id)
+          //     td
+          //       if b.coverUrl
+          //         img.cover-thumb(src=b.coverUrl, alt=`${b.title} — обложка`, onerror="this.src='/img/placeholder-cover.svg';this.onerror=null")
+          //       else
+          //         img.cover-thumb(src="/img/placeholder-cover.svg", alt="Нет обложки")
+          //     td= b.author
+          //     td= b.title
+          //     td= b.year || ''
+          //     td
+          //       if b.available
+          //         span.w3-tag.w3-green В наличии
+          //       else
+          //         - const isOver = b.dueDate && new Date(b.dueDate) < new Date(new Date().setHours(0,0,0,0));
+          //         span.w3-tag(class= isOver ? 'w3-red' : 'w3-orange') Выдана
+          //     td= b.borrower || ''
+          //     - const dueFmt = b.dueDate ? b.dueDate.split('-').reverse().join('.') : ''
+          //     td= dueFmt
+          //     td
+          //       a.w3-button.w3-small.w3-teal(href=`/books/${b.id}`, title="Открыть карточку")
+          //         i.fa-regular.fa-pen-to-square
+          //       button.w3-button.w3-small.w3-red.delete-book(type="button", data-id=b.id, title="Удалить")
+          //         i.fa-regular.fa-trash-can
 
   // Диалог добавления книги
   dialog#addBookDialog
@@ -96,8 +96,8 @@ block content
         label Название
         input.w3-input(type="text", name="title", required)
       .form-field
-        label Год выпуска
-        input.w3-input(type="number", name="year", min="0", max="2100")
+        label Год выпуска (необязательно)
+        input.w3-input(type="number", name="year", min="1", max="2100")
       .form-field
         label Ссылка на обложку (необязательно)
         input.w3-input(type="url", name="coverUrl", placeholder="https://...")
@@ -109,6 +109,5 @@ block content
           i.fa-solid.fa-xmark
           |  Отмена
 
-  // Инициализационные данные для JS
   script.
     window.__INITIAL_BOOKS__ = !{JSON.stringify(books || [])};

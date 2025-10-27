@@ -1,7 +1,7 @@
 (function () {
   function qs(sel, root = document) { return root.querySelector(sel); }
   function qsa(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
-  function el(name, props = {}, children = []) {
+  function el(name, props = {}) {
     const e = document.createElement(name);
     Object.entries(props).forEach(([k, v]) => {
       if (k === 'class') e.className = v;
@@ -9,7 +9,6 @@
       else if (k === 'text') e.textContent = v;
       else e[k] = v;
     });
-    children.forEach(c => e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c));
     return e;
   }
 
@@ -19,7 +18,7 @@
     return `<span class="w3-tag ${overdue ? 'w3-red' : 'w3-orange'}">Выдана</span>`;
     }
 
-  // Формат даты: dd.mm.yyyy (без сдвига по таймзоне для ISO yyyy-mm-dd)
+  // Формат даты
   function fmtDate(value) {
     if (!value) return '';
     const s = String(value);
@@ -123,16 +122,9 @@
       repaint();
     });
 
-    // Live search with debounce
+    // Live search
     inputSearch?.addEventListener('input', debounce(applyFilters, 300));
-    inputSearch?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        applyFilters();
-      }
-    });
 
-    // Delete with confirmation (event delegation)
     tbody.addEventListener('click', async (e) => {
       const btn = e.target.closest('.delete-book');
       if (!btn) return;
@@ -141,7 +133,6 @@
       if (!confirm('Удалить книгу?')) return;
       const res = await fetch(`/api/books/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        // remove row
         const tr = btn.closest('tr');
         tr?.remove();
       } else {

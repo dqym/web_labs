@@ -3,37 +3,35 @@ extends ./layout.pug
 block content
   .admin-panel
     .title Редактирование пользователя
-    if user
-      form#user-edit-form(data-user-id=user.id)
-        .row.mb-3
-          .col-md-6
-            label.form-label ФИО
-            input.form-control(type="text", name="fullName", required, value=user.fullName)
-          .col-md-6
-            label.form-label Email
-            input.form-control(type="email", name="email", required, value=user.email)
-        .row.mb-3
-          .col-md-6
-            label.form-label Дата рождения
-            input.form-control(type="date", name="birthdate", value=user.birthdate)
-          .col-md-6
-            label.form-label Фото (URL)
-            input.form-control(type="text", name="photoUrl", value=user.photoUrl)
-        .row.mb-3
-          .col-md-6
-            label.form-label Роль
-            select.form-select(name="role")
-              option(value="user", selected=user.role==='user') Пользователь
-              option(value="admin", selected=user.role==='admin') Администратор
-          .col-md-6
-            label.form-label Статус
-            select.form-select(name="status")
-              option(value="unconfirmed", selected=user.status==='unconfirmed') Не подтверждён
-              option(value="active", selected=user.status==='active') Активный
-              option(value="blocked", selected=user.status==='blocked') Заблокирован
-        .d-flex.gap-2
-          button.btn.btn-primary(type="submit") Сохранить
-          button.btn.btn-danger(type="button" data-delete-user) Удалить
-          a.btn.btn-secondary(href="/users") Назад
-    else
-      p.text-danger Пользователь не найден
+    form#user-edit-form
+      .row.mb-3
+        .col-md-6
+          label.form-label ФИО
+          input.form-control(type="text", name="fullName", required)
+        .col-md-6
+          label.form-label Email
+          input.form-control(type="email", name="email", required)
+      .row.mb-3
+        .col-md-6
+          label.form-label Дата рождения
+          input.form-control(type="date", name="birthdate")
+        .col-md-6
+          label.form-label Фото (URL)
+          input.form-control(type="text", name="photoUrl")
+      .row.mb-3
+        .col-md-6
+          label.form-label Роль
+          select.form-select(name="role")
+            option(value="user") Пользователь
+            option(value="admin") Администратор
+        .col-md-6
+          label.form-label Статус
+          select.form-select(name="status")
+            option(value="unconfirmed") Не подтверждён
+            option(value="active") Активный
+            option(value="blocked") Заблокирован
+      .d-flex.gap-2
+        button.btn.btn-primary(type="submit") Сохранить
+        button.btn.btn-danger(type="button" data-delete-user) Удалить
+        a.btn.btn-secondary(href="/users") Назад
+      p.text-muted.mt-2#user-edit-hint Загрузка данных пользователя...

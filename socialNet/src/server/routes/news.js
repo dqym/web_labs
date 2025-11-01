@@ -4,7 +4,7 @@ import {getAllNews, saveAllNews, getAllFriends, getAllUsers} from '../utils/file
 
 const router = express.Router();
 
-// лента новостей друзей пользователя
+// лента новостей пользователя: свои + друзей
 router.get('/users/:id/news', async (req, res, next) => {
   try {
     const userId = req.params.id;
@@ -12,15 +12,15 @@ router.get('/users/:id/news', async (req, res, next) => {
     const rec = friendsList.find((l) => l.userId === userId);
     const friendSet = new Set(rec ? rec.friends : []);
     const feed = news
-      .filter((n) => friendSet.has(n.authorId))
       .filter((n) => n.status !== 'blocked')
+      .filter((n) => n.authorId === userId || friendSet.has(n.authorId))
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .map((n) => {
-          const author = usersList.find((u) => u.id === n.authorId);
-          return {
-              ...n,
-              authorName: author.fullName,
-          };
+        const author = usersList.find((u) => u.id === n.authorId);
+        return {
+          ...n,
+          authorName: author ? author.fullName : 'Unknown'
+        };
       });
     res.json(feed);
   } catch (e) {
@@ -55,6 +55,21 @@ router.patch('/news/:newsId/status', async (req, res, next) => {
     item.status = status;
     await saveAllNews(news);
     res.json(item);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// удаление новости
+router.delete('/news/:newsId', async (req, res, next) => {
+  try {
+    const newsId = req.params.newsId;
+    const news = await getAllNews();
+    const idx = news.findIndex((n) => n.id === newsId);
+    if (idx === -1) return res.status(404).json({ error: 'Not found' });
+    news.splice(idx, 1);
+    await saveAllNews(news);
+    res.status(204).send();
   } catch (e) {
     next(e);
   }

@@ -60,7 +60,7 @@ export default {
     new HtmlWebpackPlugin({
       template: './views/users.pug',
       filename: 'users.html',
-      inject: 'body',
+      inject: false,
       templateParameters: {
         title: 'Users',
         cssPath: '/assets/css/app.css',
@@ -71,7 +71,7 @@ export default {
     new HtmlWebpackPlugin({
       template: './views/user_edit.pug',
       filename: 'user_edit.html',
-      inject: 'body',
+      inject: false,
       templateParameters: {
         title: 'User',
         cssPath: '/assets/css/app.css',
@@ -82,7 +82,7 @@ export default {
     new HtmlWebpackPlugin({
       template: './views/friends.pug',
       filename: 'friends.html',
-      inject: 'body',
+      inject: false,
       templateParameters: {
         title: 'Friends',
         cssPath: '/assets/css/app.css',
@@ -93,7 +93,7 @@ export default {
     new HtmlWebpackPlugin({
       template: './views/news.pug',
       filename: 'news.html',
-      inject: 'body',
+      inject: false,
       templateParameters: {
         title: 'News',
         cssPath: '/assets/css/app.css',

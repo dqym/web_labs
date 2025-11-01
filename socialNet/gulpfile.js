@@ -52,8 +52,8 @@ export function templates() {
         locals: {
           title: 'Social Admin',
           cssPath: '/assets/css/main.css',
-          cssPathLess: '/assets/css/admin.css',
-          jsPath: '/assets/js/app.js'
+          cssPathLess: '/assets/css/main.css',
+          jsPath: '/assets/js/index.js'
         }
       })
     )
@@ -72,16 +72,6 @@ export function stylesScss() {
     .pipe(cleanCSS())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.styles.scss.dest));
-}
-
-export function stylesLess() {
-  return gulp
-    .src('src/client/styles/admin.less')
-    .pipe(sourcemaps.init())
-    .pipe(less({ javascriptEnabled: true }))
-    .pipe(cleanCSS())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(paths.styles.less.dest));
 }
 
 export function scripts() {
@@ -106,12 +96,11 @@ export function copyAssets() {
   return gulp.src(paths.assets.src, { allowEmpty: true }).pipe(gulp.dest(paths.assets.dest));
 }
 
-export const build = gulp.series(clean, gulp.parallel(templates, stylesScss, stylesLess, scripts, copyAssets));
+export const build = gulp.series(clean, gulp.parallel(templates, stylesScss, scripts, copyAssets));
 
 export function watchFiles() {
   gulp.watch(paths.views.src, templates);
   gulp.watch(paths.styles.scss.src, stylesScss);
-  gulp.watch(paths.styles.less.src, stylesLess);
   gulp.watch(paths.scripts.src, scripts);
 }
 

@@ -33,47 +33,16 @@ block content
       .mt-3
         button.btn.btn-primary(type="submit") Добавить пользователя
     .title Список пользователей
-    if users && users.length
-      table.table.table-striped.table-users#users-table
-        thead
-          tr
-            th Фото
-            th ФИО
-            th Дата рождения
-            th Email
-            th Фото (URL)
-            th Роль
-            th Статус
-            th Действия
-        tbody
-           each u in users
-             tr(data-user-id=u.id)
-               td
-                 if u.photoUrl
-                   img.photo(src=u.photoUrl, alt=u.fullName, onerror="this.onerror=null;this.src='/assets/media/placeholder.svg';")
-                 else
-                   img.photo(src="/assets/media/placeholder.svg", alt="placeholder")
-               td
-                 input.form-control(type="text", name="fullName", value=u.fullName)
-               td
-                 input.form-control(type="date", name="birthdate", value=u.birthdate)
-               td
-                 input.form-control(type="email", name="email", value=u.email)
-               td
-                 input.form-control(type="text", name="photoUrl", value=u.photoUrl placeholder="")
-               td
-                 select.form-select(data-role)
-                   option(value="user", selected=u.role==='user') Пользователь
-                   option(value="admin", selected=u.role==='admin') Администратор
-               td
-                 select.form-select(data-status)
-                   option(value="unconfirmed", selected=u.status==='unconfirmed') Не подтверждён
-                   option(value="active", selected=u.status==='active') Активный
-                   option(value="blocked", selected=u.status==='blocked') Заблокирован
-               td.d-flex.gap-2
-                 a.btn.btn-sm.btn-outline-secondary(href=`/users/${u.id}`) Редактировать
-                 a.btn.btn-sm.btn-outline-primary(href=`/users/${u.id}/friends`) Друзья
-                 a.btn.btn-sm.btn-outline-info(href=`/users/${u.id}/news`) Новости
-                 button.btn.btn-sm.btn-success(type="button", data-save-user) Сохранить
-    else
-      p.text-muted Нет пользователей
+    table.table.table-striped.table-users#users-table
+      thead
+        tr
+          th Фото
+          th ФИО
+          th Дата рождения
+          th Email
+          th Фото (URL)
+          th Роль
+          th Статус
+          th Действия
+      tbody#users-tbody
+    p.text-muted#no-users.d-none Нет пользователей

@@ -2,8 +2,8 @@
   {
     "userId": "u1abcde123",
     "friends": [
-      "u2fghij456",
-      "UFb48EoQ8k"
+      "UFb48EoQ8k",
+      "u2fghij456"
     ]
   },
   {
@@ -17,5 +17,9 @@
     "friends": [
       "u1abcde123"
     ]
+  },
+  {
+    "userId": "-5Opqvlv_3",
+    "friends": []
   }
 ]

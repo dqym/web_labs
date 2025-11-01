@@ -18,46 +18,56 @@ router.get('/:id/friends', async (req, res, next) => {
   }
 });
 
-// добавить друга
+// добавить друга (зеркально для обоих пользователей)
 router.post('/:id/friends', async (req, res, next) => {
   try {
     const userId = req.params.id;
     const { friendId } = req.body || {};
     if (!friendId) return res.status(400).json({ error: 'friendId required' });
+    if (friendId === userId) return res.status(400).json({ error: 'Cannot add self as friend' });
 
-    const lists = await getAllFriends();
-    let rec = lists.find((l) => l.userId === userId);
-    if (!rec) {
-      rec = { userId, friends: [] };
-      lists.push(rec);
+    const [lists, users] = await Promise.all([getAllFriends(), getAllUsers()]);
+    const userExists = users.some((u) => u.id === userId);
+    const friendExists = users.some((u) => u.id === friendId);
+    if (!userExists || !friendExists) return res.status(400).json({ error: 'User or friend not found' });
+
+    // ensure records exist
+    let a = lists.find((l) => l.userId === userId);
+    if (!a) {
+      a = { userId, friends: [] };
+      lists.push(a);
     }
-    if (!rec.friends.includes(friendId)) {
-      rec.friends.push(friendId);
+    let b = lists.find((l) => l.userId === friendId);
+    if (!b) {
+      b = { userId: friendId, friends: [] };
+      lists.push(b);
     }
-    rec = lists.find((l) => l.userId === friendId);
-    if (!rec) {
-        rec = { friendId, friends: [] };
-        lists.push(rec);
-    }
-    if (!rec.friends.includes(userId)) {
-        rec.friends.push(userId);
-    }
+
+    // add both directions
+    if (!a.friends.includes(friendId)) a.friends.push(friendId);
+    if (!b.friends.includes(userId)) b.friends.push(userId);
+
     await saveAllFriends(lists);
-    res.status(201).json(rec);
+    res.status(201).json(a);
   } catch (e) {
     next(e);
   }
 });
 
-// удалить друга
+// удалить друга (зеркально для обоих пользователей)
 router.delete('/:id/friends/:friendId', async (req, res, next) => {
   try {
     const { id: userId, friendId } = req.params;
     const lists = await getAllFriends();
-    const rec = lists.find((l) => l.userId === userId);
-    if (!rec) return res.status(404).json({ error: 'Not found' });
-    rec.friends = rec.friends.filter((fid) => fid !== friendId);
+
+    const a = lists.find((l) => l.userId === userId);
+    const b = lists.find((l) => l.userId === friendId);
+
+    if (a) a.friends = a.friends.filter((fid) => fid !== friendId);
+    if (b) b.friends = b.friends.filter((fid) => fid !== userId);
+
     await saveAllFriends(lists);
+    // Идемпотентность: всегда 204, даже если связки не было
     res.status(204).send();
   } catch (e) {
     next(e);

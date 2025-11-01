@@ -13,7 +13,71 @@ async function api(path, options = {}) {
   return res.text();
 }
 
+function getUserIdFromPath() {
+  const m = window.location.pathname.match(/^\/users\/([^\/]+)(?:\/|$)/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
 // ---------- Users ----------
+function userRowHtml(u) {
+  const photo = u.photoUrl && u.photoUrl.trim() ? u.photoUrl : '/assets/media/placeholder.svg';
+  const dateVal = u.birthdate || '';
+  const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return `
+    <tr data-user-id="${esc(u.id)}">
+      <td>
+        <img class="photo" src="${esc(photo)}" alt="${esc(u.fullName)}" onerror="this.onerror=null;this.src='/assets/media/placeholder.svg';"/>
+      </td>
+      <td><input class="form-control" type="text" name="fullName" value="${esc(u.fullName)}"></td>
+      <td><input class="form-control" type="date" name="birthdate" value="${esc(dateVal)}"></td>
+      <td><input class="form-control" type="email" name="email" value="${esc(u.email)}"></td>
+      <td><input class="form-control" type="text" name="photoUrl" value="${esc(u.photoUrl || '')}" placeholder=""></td>
+      <td>
+        <select class="form-select" data-role>
+          <option value="user" ${u.role === 'user' ? 'selected' : ''}>Пользователь</option>
+          <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Администратор</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-select" data-status>
+          <option value="unconfirmed" ${u.status === 'unconfirmed' ? 'selected' : ''}>Не подтверждён</option>
+          <option value="active" ${u.status === 'active' ? 'selected' : ''}>Активный</option>
+          <option value="blocked" ${u.status === 'blocked' ? 'selected' : ''}>Заблокирован</option>
+        </select>
+      </td>
+      <td class="d-flex gap-2">
+        <a class="btn btn-sm btn-outline-secondary" href="/users/${esc(u.id)}">Редактировать</a>
+        <a class="btn btn-sm btn-outline-primary" href="/users/${esc(u.id)}/friends">Друзья</a>
+        <a class="btn btn-sm btn-outline-info" href="/users/${esc(u.id)}/news">Новости</a>
+        <button class="btn btn-sm btn-success" type="button" data-save-user>Сохранить</button>
+      </td>
+    </tr>`;
+}
+
+async function renderUsersTable(users) {
+  const tbody = document.querySelector('#users-tbody');
+  const emptyEl = document.querySelector('#no-users');
+  if (!tbody) return;
+  if (!users || users.length === 0) {
+    tbody.innerHTML = '';
+    if (emptyEl) emptyEl.classList.remove('d-none');
+    return;
+  }
+  if (emptyEl) emptyEl.classList.add('d-none');
+  tbody.innerHTML = users.map(userRowHtml).join('');
+}
+
+async function loadUsers() {
+  const table = document.querySelector('#users-table');
+  if (!table) return;
+  try {
+    const users = await api('/api/users');
+    await renderUsersTable(users);
+  } catch (e) {
+    console.error('Failed to load users', e);
+  }
+}
+
 function initUsersTable() {
   const table = document.querySelector('#users-table');
   if (!table) return;
@@ -61,7 +125,8 @@ function initCreateUserForm() {
     try {
       await api('/api/users', { method: 'POST', body: JSON.stringify(payload) });
       showToast('Пользователь создан');
-      window.location.reload();
+      form.reset();
+      await loadUsers();
     } catch (err) {
       alert('Ошибка создания: ' + err.message);
     }
@@ -70,13 +135,41 @@ function initCreateUserForm() {
 
 // ---------- User edit ----------
 function initUserEditForm() {
-    const form = document.querySelector('#user-edit-form');
-    if (!form) return;
+  const form = document.querySelector('#user-edit-form');
+  if (!form) return;
   const delButton = form.querySelector('[data-delete-user]');
+  const hint = document.querySelector('#user-edit-hint');
+  const userId = getUserIdFromPath();
+  if (!userId) {
+    if (hint) hint.textContent = 'Не удалось определить пользователя из адреса URL';
+    return;
+  }
+  form.dataset.userId = userId;
+
+  // Загрузить данные пользователя и заполнить форму
+  (async () => {
+    try {
+      const u = await api(`/api/users/${userId}`);
+      form.querySelector('input[name="fullName"]').value = u.fullName || '';
+      form.querySelector('input[name="email"]').value = u.email || '';
+      form.querySelector('input[name="birthdate"]').value = u.birthdate || '';
+      form.querySelector('input[name="photoUrl"]').value = u.photoUrl || '';
+      const roleSel = form.querySelector('select[name="role"]');
+      const statusSel = form.querySelector('select[name="status"]');
+      if (roleSel) roleSel.value = u.role || 'user';
+      if (statusSel) statusSel.value = u.status || 'unconfirmed';
+      if (hint) hint.classList.add('d-none');
+    } catch (err) {
+      if (hint) {
+        hint.classList.remove('text-muted');
+        hint.classList.add('text-danger');
+        hint.textContent = 'Пользователь не найден';
+      }
+    }
+  })();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const userId = form.dataset.userId;
     const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
     await api(`/api/users/${userId}`, { method: 'PUT', body: JSON.stringify(payload) });
@@ -85,10 +178,9 @@ function initUserEditForm() {
 
   if (delButton) {
     delButton.addEventListener('click', async () => {
-      const userId = form.dataset.userId;
-      if (!confirm("Вы уверены, что хотите удалить пользователя?")) return;
+      if (!confirm('Вы уверены, что хотите удалить пользователя?')) return;
       await api(`/api/users/${userId}`, { method: 'DELETE' });
-      showToast("Пользователь удалён");
+      showToast('Пользователь удалён');
       window.location.href = '/users';
     });
   }
@@ -97,8 +189,9 @@ function initUserEditForm() {
 // ---------- Friends ----------
 function initFriendsPage() {
   const container = document.querySelector('#friends-list');
-  const userId = container?.dataset.userId;
-  if (!container || !userId) return;
+  if (!container) return;
+  const userId = container.dataset.userId || getUserIdFromPath();
+  if (!userId) return;
 
   const select = document.querySelector('#add-friend-select');
   const btnAdd = document.querySelector('#add-friend-button');
@@ -153,25 +246,57 @@ function initFriendsPage() {
 // ---------- News ----------
 function initNewsPage() {
   const container = document.querySelector('#news-list');
-  const userId = container?.dataset.userId;
-  if (!container || !userId) return;
+  if (!container) return;
+  const userId = container.dataset.userId || getUserIdFromPath();
+  if (!userId) return;
 
   const load = async () => {
     const news = await api(`/api/users/${userId}/news`);
     container.innerHTML = '';
     news.forEach((n) => {
       const li = document.createElement('li');
-      li.className = 'list-group-item';
-      li.innerHTML = `<div class="fw-bold">${n.authorName} ${new Date(n.createdAt).toLocaleString()}</div><div>${n.content}</div>`;
+      li.className = 'list-group-item d-flex justify-content-between align-items-start';
+      const left = document.createElement('div');
+      left.className = 'me-2 flex-grow-1';
+      const header = document.createElement('div');
+      header.className = 'fw-bold';
+      header.textContent = `${n.authorName} ${new Date(n.createdAt).toLocaleString()}`;
+      const body = document.createElement('div');
+      body.textContent = n.content;
+      left.appendChild(header);
+      left.appendChild(body);
+      li.appendChild(left);
+      if (n.authorId === userId) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn btn-sm btn-outline-danger';
+        delBtn.setAttribute('data-delete-news', n.id);
+        delBtn.textContent = 'Удалить';
+        li.appendChild(delBtn);
+      }
       container.appendChild(li);
     });
   };
+
+  // удаление своих постов
+  container.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-delete-news]');
+    if (btn) {
+      const id = btn.getAttribute('data-delete-news');
+      try {
+        await api(`/api/news/${id}`, { method: 'DELETE' });
+        showToast('Пост удалён');
+        await load();
+      } catch (err) {
+        alert('Не удалось удалить пост: ' + err.message);
+      }
+    }
+  });
 
   const form = document.querySelector('#news-create-form');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const authorId = form.dataset.userId;
+      const authorId = userId;
       const content = form.querySelector('textarea[name="content"]').value.trim();
       if (!content) return;
       await api('/api/news', { method: 'POST', body: JSON.stringify({ authorId, content }) });
@@ -203,4 +328,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initUserEditForm();
   initFriendsPage();
   initNewsPage();
+  loadUsers();
 });

@@ -2,7 +2,7 @@
   {
     "id": "u1abcde123",
     "fullName": "Иван Петров",
-    "birthdate": "1990-05-12",
+    "birthdate": "1990-06-08",
     "email": "ivan.petrov@example.com",
     "photoUrl": "https://cdn-storage-media.tass.ru/resize/752x496/tass_media/2025/04/29/k/1745936749627430_kWkp7tT3.jpg",
     "role": "admin",
@@ -22,6 +22,15 @@
     "fullName": "dfghdfgh",
     "birthdate": null,
     "email": "fyiukil@gmail.com",
+    "photoUrl": "",
+    "role": "user",
+    "status": "unconfirmed"
+  },
+  {
+    "id": "E91dmTR5Wc",
+    "fullName": "qwe",
+    "birthdate": null,
+    "email": "testmail36244@mail.ru",
     "photoUrl": "",
     "role": "user",
     "status": "unconfirmed"

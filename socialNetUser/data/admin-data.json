@@ -1,0 +1,182 @@
+{
+  "users": [
+    {
+      "id": "u-admin",
+      "name": "Elena Admin",
+      "email": "elena.admin@example.com",
+      "password": "admin123",
+      "isAdmin": true,
+      "photoUrl": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80",
+      "friends": [
+        "u-learner",
+        "bddc9c96-1f1c-4c3e-a3af-ea372f150883"
+      ],
+      "bio": "Head moderator of the Social Network.",
+      "createdAt": "2024-09-01T10:00:00.000Z",
+      "fullName": "Elena Admin",
+      "role": "admin",
+      "status": "active",
+      "photos": [],
+      "birthdate": ""
+    },
+    {
+      "id": "u-learner",
+      "name": "John Learner",
+      "email": "john.learner@example.com",
+      "password": "learn123",
+      "isAdmin": false,
+      "photoUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+      "friends": [
+        "u-admin"
+      ],
+      "bio": "",
+      "createdAt": "2024-10-11T09:30:00.000Z",
+      "fullName": "John Learner",
+      "role": "user",
+      "status": "unconfirmed",
+      "photos": [],
+      "birthdate": ""
+    },
+    {
+      "id": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "name": "qwee",
+      "email": "qwe@gmail.com",
+      "password": "1234",
+      "isAdmin": false,
+      "photoUrl": "",
+      "friends": [
+        "u-admin"
+      ],
+      "bio": "",
+      "createdAt": "2025-11-16T23:28:37.079Z",
+      "fullName": "qwee",
+      "role": "user",
+      "status": "blocked",
+      "photos": [],
+      "birthdate": ""
+    }
+  ],
+  "posts": [
+    {
+      "id": "p-1",
+      "authorId": "u-admin",
+      "content": "Добро пожаловать в социальную сеть!",
+      "createdAt": "2024-11-01T08:10:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "p-2",
+      "authorId": "u-learner",
+      "content": "Готов тестировать новые функции",
+      "createdAt": "2024-11-05T12:00:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "1108d126-bf84-4689-a0d0-57aae0ecc12e",
+      "authorId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "1234",
+      "createdAt": "2025-11-17T00:35:15.329Z",
+      "status": "active"
+    }
+  ],
+  "messages": [
+    {
+      "id": "f717221d-1808-476f-81c7-7b1a321ec390",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "1213",
+      "createdAt": "2025-11-17T00:25:42.913Z"
+    },
+    {
+      "id": "2199151a-198c-49cd-a499-e7652b2500e7",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "1123",
+      "createdAt": "2025-11-17T00:25:44.949Z"
+    },
+    {
+      "id": "54713a8d-6829-4f38-9752-ed2b0d42f706",
+      "fromUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "toUserId": "u-admin",
+      "content": "112333",
+      "createdAt": "2025-11-17T00:25:48.103Z"
+    },
+    {
+      "id": "3f4fceaf-f8a8-457b-b79b-2c4cdf2a080d",
+      "fromUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "toUserId": "u-admin",
+      "content": "jyihe",
+      "createdAt": "2025-11-17T00:25:56.621Z"
+    },
+    {
+      "id": "155ad6ba-2adf-479a-b5b9-6b67bc989463",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "wergtss",
+      "createdAt": "2025-11-17T00:25:59.632Z"
+    },
+    {
+      "id": "8b95d10e-8f99-4a3b-8fb6-07eff332340e",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "98765432222222222222222222222",
+      "createdAt": "2025-11-17T00:26:34.117Z"
+    },
+    {
+      "id": "561fc28e-72cf-4c6c-a8ba-13f2323cccde",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "2221",
+      "createdAt": "2025-11-17T00:26:37.240Z"
+    },
+    {
+      "id": "4c20bc98-2213-4105-bd1f-47d951e1f462",
+      "fromUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "toUserId": "u-admin",
+      "content": "4w",
+      "createdAt": "2025-11-17T00:26:39.811Z"
+    },
+    {
+      "id": "54ec7b81-8930-4b55-8d51-c87c62e8ee81",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "sssf",
+      "createdAt": "2025-11-17T00:26:42.297Z"
+    },
+    {
+      "id": "49f71d6b-dfe5-4803-b4f7-16a1f1f143aa",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "1\n2",
+      "createdAt": "2025-11-17T00:26:47.580Z"
+    },
+    {
+      "id": "0f232c7e-5003-496f-bae1-482b2622600f",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "1ccx",
+      "createdAt": "2025-11-17T00:26:54.812Z"
+    },
+    {
+      "id": "c62a72d6-3979-4138-b08c-63cedcfae11d",
+      "fromUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "toUserId": "u-admin",
+      "content": "1",
+      "createdAt": "2025-11-17T00:26:56.840Z"
+    },
+    {
+      "id": "aa7c0eb5-5aea-4533-8684-a233357574f4",
+      "fromUserId": "u-admin",
+      "toUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "content": "hi",
+      "createdAt": "2025-11-17T02:29:50.281Z"
+    },
+    {
+      "id": "0ee77182-2681-4ad8-a891-c2afad06d8a9",
+      "fromUserId": "bddc9c96-1f1c-4c3e-a3af-ea372f150883",
+      "toUserId": "u-admin",
+      "content": "hi",
+      "createdAt": "2025-11-17T02:29:52.766Z"
+    }
+  ]
+}

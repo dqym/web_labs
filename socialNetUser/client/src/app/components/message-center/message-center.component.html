@@ -1,0 +1,39 @@
+<section class="card">
+  <header>
+    <div>
+      <p class="eyebrow">Сообщения</p>
+    </div>
+    <select
+      (change)="onSelectPeer($event)"
+      [value]="peerId || ''"
+      [disabled]="!friendUsers.length || loading"
+    >
+      <option value="">Выбрать собеседника</option>
+      <option *ngFor="let friend of friendUsers" [value]="friend.id">
+        {{ friend.name }}
+      </option>
+    </select>
+  </header>
+
+  <div class="chat" *ngIf="peerId; else choosePeer" [appAutoScroll]="messages.length">
+    <article *ngFor="let message of messages; trackBy: trackByMessageId" [class.me]="message.fromUserId === currentUser?.id">
+      <p class="meta">{{ message.createdAt | date: 'd MMM, HH:mm' }}</p>
+      <p class="bubble">{{ message.content }}</p>
+    </article>
+  </div>
+  <ng-template #choosePeer>
+    <p class="empty">Чтобы начать переписку, выберите друга сверху.</p>
+  </ng-template>
+
+  <div class="send" *ngIf="peerId">
+    <textarea
+      rows="2"
+      placeholder="Напишите сообщение..."
+      [formControl]="messageControl"
+      [disabled]="loading"
+    ></textarea>
+    <button type="button" (click)="onSend()" [disabled]="!messageControl.value || loading">
+      Отправить
+    </button>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+<section class="login-page">
+  <article class="card login-card">
+    <header>
+      <p class="eyebrow">Вход</p>
+      <h1>С возвращением!</h1>
+      <p>Введите почту и пароль, чтобы перейти к своей ленте.</p>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        E-mail
+        <input formControlName="email" type="email" placeholder="user@example.com" />
+      </label>
+      <label>
+        Пароль
+        <input formControlName="password" type="password" placeholder="••••" />
+      </label>
+      <button type="submit" [disabled]="loading">Войти</button>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+
+    <p class="hint">
+      Нет аккаунта?
+      <a routerLink="/register">Создайте профиль</a>
+    </p>
+  </article>
+</section>

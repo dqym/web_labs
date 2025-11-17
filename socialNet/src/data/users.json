@@ -20,16 +20,16 @@
   {
     "id": "UFb48EoQ8k",
     "fullName": "dfghdfgh",
-    "birthdate": null,
+    "birthdate": "2025-11-05",
     "email": "fyiukil@gmail.com",
     "photoUrl": "",
-    "role": "user",
+    "role": "admin",
     "status": "unconfirmed"
   },
   {
     "id": "E91dmTR5Wc",
     "fullName": "qwe",
-    "birthdate": null,
+    "birthdate": "2025-11-12",
     "email": "testmail36244@mail.ru",
     "photoUrl": "",
     "role": "user",

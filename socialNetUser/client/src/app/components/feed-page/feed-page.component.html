@@ -1,0 +1,62 @@
+<section class="page" *ngIf="activeUser; else noUser">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Главная лента</p>
+      <h1>Привет, {{ activeUser.name }} 👋</h1>
+    </div>
+  </header>
+
+  <nav class="tab-nav" aria-label="Социальные вкладки">
+    <button type="button" (click)="setTab('news')" [class.active]="activeTab === 'news'">
+      Новости
+    </button>
+    <button type="button" (click)="setTab('friends')" [class.active]="activeTab === 'friends'">
+      Друзья
+    </button>
+    <button type="button" (click)="setTab('messages')" [class.active]="activeTab === 'messages'">
+      Сообщения
+    </button>
+  </nav>
+
+  <div class="tab-container" [ngSwitch]="activeTab">
+    <div *ngSwitchCase="'news'" class="tab-panel">
+      <app-post-feed
+        class="primary"
+        [posts]="posts"
+        [authorMap]="authorMap"
+        [loading]="loadingFeed"
+        (refresh)="refreshFeed()"
+      ></app-post-feed>
+    </div>
+
+    <div *ngSwitchCase="'friends'" class="tab-panel">
+      <app-friends-panel
+        [currentUser]="activeUser"
+        [allUsers]="allUsers"
+        [userMap]="authorMap"
+        [loading]="loadingFriends"
+        (addFriend)="onAddFriend($event)"
+        (removeFriend)="onRemoveFriend($event)"
+      ></app-friends-panel>
+    </div>
+
+    <div *ngSwitchCase="'messages'" class="tab-panel">
+      <app-message-center
+        [currentUser]="activeUser"
+        [friendUsers]="friendUsers"
+        [messages]="messages"
+        [peerId]="peerId"
+        [loading]="loadingMessages"
+        (peerChange)="onPeerChange($event)"
+        (sendMessage)="onSendMessage($event)"
+      ></app-message-center>
+    </div>
+  </div>
+</section>
+
+<ng-template #noUser>
+  <section class="empty card">
+    <h2>Войдите, чтобы увидеть ленту</h2>
+    <a routerLink="/login">Перейти к авторизации</a>
+  </section>
+</ng-template>

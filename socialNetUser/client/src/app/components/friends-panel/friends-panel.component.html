@@ -1,0 +1,34 @@
+<section class="card">
+  <header>
+    <p class="eyebrow">Друзья</p>
+  </header>
+
+  <ul class="friends" *ngIf="currentUser?.friends?.length; else noFriends">
+    <li *ngFor="let friendId of currentUser?.friends">
+      <div class="friend-info">
+        <div
+          class="avatar"
+          [style.background-image]="'url(' + userMap[friendId]?.photoUrl + ')'"
+        ></div>
+        <div>
+          <p class="name">{{ userMap[friendId]?.name || friendId }}</p>
+          <p class="email">{{ userMap[friendId]?.email }}</p>
+        </div>
+      </div>
+      <button type="button" class="ghost" (click)="removeFriend.emit(friendId)" [disabled]="loading">
+        Удалить
+      </button>
+    </li>
+  </ul>
+  <ng-template #noFriends>
+    <p class="empty">Добавьте друзей, чтобы видеть их новости.</p>
+  </ng-template>
+
+  <div class="inline-form" *ngIf="availableUsers.length">
+    <select [formControl]="friendControl" [disabled]="loading">
+      <option value="" disabled selected>Выберите пользователя</option>
+      <option *ngFor="let user of availableUsers" [value]="user.id">{{ user.name }}</option>
+    </select>
+    <button type="button" (click)="onAdd()" [disabled]="!friendControl.value || loading">Добавить</button>
+  </div>
+</section>

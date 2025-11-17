@@ -1,0 +1,67 @@
+<section class="page">
+  <div class="hero card">
+    <div>
+      <p class="eyebrow">Регистрация</p>
+      <h1>Создайте профиль в учебной социальной сети</h1>
+      <p>Укажите пару полей, добавьте фото и сразу переходите к ленте.</p>
+    </div>
+    <form [formGroup]="registrationForm" (ngSubmit)="submit()">
+      <label>Имя</label>
+      <input formControlName="name" placeholder="Например, Анна" />
+      <small class="error" *ngIf="registrationForm.controls.name.invalid && registrationForm.controls.name.touched">
+        Минимум 2 символа.
+      </small>
+
+      <label>E-mail</label>
+      <input formControlName="email" type="email" placeholder="user@example.com" />
+
+      <label>Пароль</label>
+      <input formControlName="password" type="password" placeholder="••••" />
+
+      <label>Ссылка на фото (по желанию)</label>
+      <input formControlName="photoUrl" placeholder="https://images..." />
+
+      <label class="checkbox">
+        <input type="checkbox" formControlName="isAdmin" />
+        Администратор?
+      </label>
+
+      <button type="submit" [disabled]="registrationForm.invalid || loading">Зарегистрировать</button>
+    </form>
+  </div>
+
+  <section class="card current" *ngIf="activeUser">
+    <header>
+      <div class="avatar" [style.background-image]="'url(' + activeUser.photoUrl + ')'"> </div>
+      <div>
+        <p class="eyebrow">Текущий пользователь</p>
+        <h2>{{ activeUser.name }}</h2>
+        <p>{{ activeUser.email }}</p>
+      </div>
+    </header>
+
+    <form [formGroup]="photoForm" class="inline" (ngSubmit)="updatePhoto()">
+      <input formControlName="photoUrl" placeholder="Новый URL фотографии" />
+      <button type="submit" [disabled]="photoForm.invalid || loading">Обновить фото</button>
+      <button type="button" class="ghost" (click)="removePhoto()" [disabled]="loading">Удалить</button>
+    </form>
+  </section>
+
+  <section class="card users" *ngIf="users.length">
+    <header>
+      <p class="eyebrow">Пользователи</p>
+    </header>
+    <div class="grid">
+      <article *ngFor="let user of users; trackBy: trackByUserId">
+        <div class="avatar" [style.background-image]="'url(' + user.photoUrl + ')'"> </div>
+        <div>
+          <strong>{{ user.name }}</strong>
+          <p>{{ user.email }}</p>
+          <span class="badge" *ngIf="user.isAdmin">Администратор</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <p class="status" *ngIf="status">{{ status }}</p>
+</section>

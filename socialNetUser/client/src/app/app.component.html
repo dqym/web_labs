@@ -1,0 +1,129 @@
+<div class="app-shell">
+  <aside class="shell-sidebar">
+    <div class="brand-card">
+      <span class="badge">SN</span>
+      <div class="brand-copy">
+        <p class="eyebrow">SocialNet</p>
+      </div>
+    </div>
+
+    <nav class="primary-nav">
+      <a routerLink="/feed" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Новости</span>
+        <small>Вкладки: новости, друзья, чат</small>
+      </a>
+      <a routerLink="/post" routerLinkActive="active">
+        <span>Создать пост</span>
+        <small>Поделитесь обновлением</small>
+      </a>
+      <a routerLink="/register" routerLinkActive="active">
+        <span>Регистрация</span>
+        <small>Новый пользователь</small>
+      </a>
+      <a routerLink="/login" routerLinkActive="active" *ngIf="!activeUser">
+        <span>Вход</span>
+        <small>Авторизация</small>
+      </a>
+      <a routerLink="/admin" routerLinkActive="active">
+        <span>Администрирование</span>
+        <small>Модуль модерации</small>
+      </a>
+    </nav>
+
+    <section class="active-user" *ngIf="activeUser as user; else guestPanel">
+      <header>
+        <div>
+          <p class="eyebrow">Активный профиль</p>
+          <p class="subtitle">Вы вошли как {{ user.name }}</p>
+        </div>
+        <button type="button" class="ghost" (click)="onLogout()">Выйти</button>
+      </header>
+      <div class="user-body">
+        <img [src]="user.photoUrl || 'assets/avatar-placeholder.svg'" [alt]="user.name" loading="lazy" />
+        <div>
+          <p class="name">{{ user.name }}</p>
+          <p class="meta">{{ user.email }}</p>
+          <p class="meta">Друзей: {{ user.friends.length }}</p>
+          <span class="flag" *ngIf="user.isAdmin">Администратор</span>
+        </div>
+      </div>
+    </section>
+
+    <ng-template #guestPanel>
+      <section class="active-user empty">
+        <p class="eyebrow">Гостевой режим</p>
+        <p>Войдите в систему, чтобы открыть ленту, друзей и сообщения.</p>
+        <div class="stacked-actions">
+          <a routerLink="/login" class="btn primary">Войти</a>
+          <a routerLink="/register" class="btn secondary">Создать профиль</a>
+        </div>
+      </section>
+    </ng-template>
+
+    <div class="loading" *ngIf="loadingUsers">
+      <span class="spinner"></span>
+      <p>Обновляем данные…</p>
+    </div>
+  </aside>
+
+  <main class="shell-content">
+    <ng-container *ngIf="activeUser as user; else guestHero">
+      <header class="content-header">
+        <div class="headline">
+          <p class="eyebrow">SocialNet User</p>
+          <ul class="hero-stats">
+            <li>
+              <p class="eyebrow">Пользователей</p>
+              <strong>{{ users.length || 0 }}</strong>
+            </li>
+            <li>
+              <p class="eyebrow">Друзей</p>
+              <strong>{{ user.friends.length || 0 }}</strong>
+            </li>
+            <li>
+              <p class="eyebrow">Статус</p>
+              <strong>В сети</strong>
+            </li>
+          </ul>
+        </div>
+        <div class="toolbar">
+          <a routerLink="/feed" class="btn primary">К новостям</a>
+          <a routerLink="/post" class="btn secondary">Новый пост</a>
+        </div>
+      </header>
+    </ng-container>
+
+    <ng-template #guestHero>
+      <header class="content-header">
+        <div class="headline">
+          <p class="eyebrow">SocialNet User</p>
+          <h1>Добро пожаловать!</h1>
+          <p class="subtitle">Авторизуйтесь или зарегистрируйтесь, чтобы увидеть свою ленту.</p>
+          <ul class="hero-stats">
+            <li>
+              <p class="eyebrow">Пользователей</p>
+              <strong>{{ users.length || 0 }}</strong>
+            </li>
+            <li>
+              <p class="eyebrow">Друзей</p>
+              <strong>0</strong>
+              <small> (доступно после входа)</small>
+            </li>
+            <li>
+              <p class="eyebrow">Статус</p>
+              <strong>Гость</strong>
+            </li>
+          </ul>
+        </div>
+        <div class="toolbar">
+          <a routerLink="/login" class="btn primary">Войти</a>
+          <a routerLink="/register" class="btn secondary">Создать профиль</a>
+        </div>
+      </header>
+    </ng-template>
+
+    <section class="content-body">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

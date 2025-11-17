@@ -1,0 +1,11 @@
+<section class="card">
+  <p class="eyebrow">Модуль администрирования</p>
+  <h2>Переход к панели админа</h2>
+  <p>
+    Нажмите кнопку ниже, чтобы открыть модуль администрирования в другом приложении.
+  </p>
+  <button type="button" [disabled]="!user?.isAdmin" (click)="openModule()">
+    Перейти в модуль
+  </button>
+  <p class="hint" *ngIf="!user?.isAdmin">Доступ только для администраторов.</p>
+</section>

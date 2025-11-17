@@ -1,0 +1,23 @@
+<section class="page">
+  <header>
+    <p class="eyebrow">Создание новости</p>
+    <h1>Поделитесь важным событием</h1>
+    <p>Новости попадут в ленты всех друзей.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="card">
+    <label for="content">Текст новости</label>
+    <textarea
+      id="content"
+      rows="6"
+      formControlName="content"
+      placeholder="Например: Запускаем новый учебный курс!"
+    ></textarea>
+    <small class="error" *ngIf="form.controls.content.invalid && form.controls.content.touched">
+      Минимум 4 символа.
+    </small>
+
+    <button type="submit" [disabled]="form.invalid || loading">Опубликовать</button>
+    <p class="status" *ngIf="stateMessage">{{ stateMessage }}</p>
+  </form>
+</section>

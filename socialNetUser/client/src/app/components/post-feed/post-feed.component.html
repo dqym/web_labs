@@ -1,0 +1,32 @@
+<section class="card">
+  <header>
+    <div>
+      <p class="eyebrow">Лента новостей</p>
+      <h3>Обновления друзей</h3>
+    </div>
+    <button type="button" class="ghost" (click)="refresh.emit()" [disabled]="loading">
+      <span *ngIf="!loading">Обновить</span>
+      <span *ngIf="loading">Обновление...</span>
+    </button>
+  </header>
+
+  <div class="feed" *ngIf="posts.length; else empty">
+    <article
+      class="post"
+      *ngFor="let post of posts; trackBy: trackByPostId"
+      [appNewItemHighlight]="post.id"
+    >
+      <div class="avatar" [style.background-image]="'url(' + authorMap[post.authorId]?.photoUrl + ')'"></div>
+      <div>
+        <div class="post-meta">
+          <strong>{{ authorMap[post.authorId]?.name || 'Неизвестный автор' }}</strong>
+          <span>{{ post.createdAt | date: 'd MMM, HH:mm' }}</span>
+        </div>
+        <p>{{ post.content }}</p>
+      </div>
+    </article>
+  </div>
+  <ng-template #empty>
+    <p class="empty">Пока нет записей. Добавьте новость или подружитесь с кем-нибудь.</p>
+  </ng-template>
+</section>

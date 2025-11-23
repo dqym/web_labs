@@ -1,0 +1,21 @@
+{
+  "name": "stockexchange",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stock exchange simulator workspace",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:backend dev:frontend",
+    "dev:backend": "npm --prefix backend run start:dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
+    "lint": "npm --prefix backend run lint && npm --prefix frontend run lint",
+    "test": "npm --prefix backend run test && npm --prefix backend run test:e2e"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
